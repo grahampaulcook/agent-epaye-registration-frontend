@@ -1,22 +1,20 @@
 package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 
-import akka.util.Timeout
 import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, post, stubFor, urlEqualTo}
 import play.api.http.Status
 import play.api.libs.json.Json
 import play.api.test.FakeRequest
-import play.api.test.Helpers.redirectLocation
+import play.api.test.Helpers._
 import uk.gov.hmrc.play.http.BadGatewayException
 
 class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
   private lazy val controller: AgentEpayeRegistrationController = app.injector.instanceOf[AgentEpayeRegistrationController]
 
   "root context redirects to /register" in {
-    import scala.concurrent.duration._
     val result = controller.root(FakeRequest())
 
     status(result) shouldBe 303
-    redirectLocation(result)(new Timeout(1 second)).head should include ("/register")
+    redirectLocation(result).head should include ("/register")
   }
 
   "showRegistrationForm shows the registration form page" in {
