@@ -1,5 +1,7 @@
 package uk.gov.hmrc.agentepayeregistrationfrontend.controllers
 
+import scala.concurrent.duration._
+
 import com.github.tomakehurst.wiremock.client.WireMock.{aResponse, post, stubFor, urlEqualTo}
 import play.api.http.Status
 import play.api.libs.json.Json
@@ -15,7 +17,9 @@ class AgentEpayeRegistrationControllerISpec extends BaseControllerISpec {
     val result = controller.root(FakeRequest())
 
     status(result) shouldBe 303
-    redirectLocation(result).get should include("/start")
+
+    val timeout = 2.seconds
+    redirectLocation(result)(timeout).get should include("/start")
   }
 
   "start displays start page" in {
